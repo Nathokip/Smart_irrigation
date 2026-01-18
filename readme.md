@@ -30,8 +30,8 @@ This Expert System uses **Fuzzy Logic** principles to:
 
 1.  **Clone the repository** (or save the code):
     ```bash
-    git clone [https://github.com/yourusername/smart-irrigation-prolog.git](https://github.com/yourusername/smart-irrigation-prolog.git)
-    cd smart-irrigation-prolog
+    git clone https://github.com/Nathokip/Smart_irrigation.git
+    cd Smart_irrigation
     ```
 
 2.  **Run the System:**
