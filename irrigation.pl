@@ -1,10 +1,5 @@
-% =======================================================
-% AGRICULTURE EXPERT SYSTEM - IRRIGATION CONTROLLER
-% =======================================================
 
-% ==========================================
-% 1. USER INTERFACE & INPUT VALIDATION
-% ==========================================
+%  USER INTERFACE & INPUT VALIDATION
 
 start :-
     write('--- SMART IRRIGATION SYSTEM ---'), nl,
@@ -25,7 +20,7 @@ start :-
 
 % --- RECURSIVE INPUT HELPERS ---
 
-% Clause 1: Success Case (Valid Input)
+% Success Case (Valid Input)
 get_valid_input(Prompt, Min, Max, Input) :-
     write(Prompt), read(Input),
     number(Input), 
@@ -33,16 +28,14 @@ get_valid_input(Prompt, Min, Max, Input) :-
     Input =< Max, 
     !. % Stop here if valid
 
-% Clause 2: Failure Case (Invalid Input -> Retry)
+% Failure Case (Invalid Input -> Retry)
 get_valid_input(Prompt, Min, Max, Result) :-
     nl, write('ERROR: Invalid input!'), nl,
     write('Please enter a number between '), write(Min), write(' and '), write(Max), write('.'), nl,
     nl,
     get_valid_input(Prompt, Min, Max, Result). % Recursively call itself
 
-% ==========================================
-% 2. FUZZIFICATION (Converting Numbers to Words)
-% ==========================================
+% FUZZIFICATION (Converting Numbers to Words)
 
 category_moisture(M, dry)   :- M =< 40.
 category_moisture(M, moist) :- M >= 35, M =< 75.
@@ -56,9 +49,7 @@ category_humidity(H, low)    :- H =< 40.
 category_humidity(H, medium) :- H >= 35, H =< 75.
 category_humidity(H, high)   :- H >= 70.
 
-% ==========================================
-% 3. RULE BASE (Knowledge Base)
-% ==========================================
+% RULE BASE (Knowledge Base)
 
 % --- HIGH PRIORITY RULES ---
 rule(dry, hot, low, high, 'Critical: Soil is dry and evaporation rate is high.') :- !.
@@ -74,23 +65,21 @@ rule(moist, cool, low, medium, 'Maintenance: Low humidity may dry out moist soil
 % --- DEFAULT / CATCH-ALL RULE ---
 rule(_, _, _, low, 'Default: No extreme conditions detected. Conserving water.').
 
-% ==========================================
-% 4. INFERENCE ENGINE (The Missing Part)
-% ==========================================
+% INFERENCE ENGINE 
 
 get_irrigation(M, T, H) :-
-    % 1. Fuzzify Inputs
+    % Fuzzify Inputs
     category_moisture(M, M_Cat),
     category_temp(T, T_Cat),
     category_humidity(H, H_Cat),
     
-    % 2. Debugging/Trace output
+    % Trace output
     format('Fuzzified State: Moisture=~w, Temp=~w, Humidity=~w~n', [M_Cat, T_Cat, H_Cat]),
     
-    % 3. Match Rule
+    % Match Rule
     rule(M_Cat, T_Cat, H_Cat, Decision, Explanation),
     
-    % 4. Output Result
+    % Output Result
     nl,
     write('RECOMMENDED IRRIGATION: '), write(Decision), nl,
     write('REASON: '), write(Explanation), nl,
